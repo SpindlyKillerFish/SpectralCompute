@@ -16,6 +16,7 @@ namespace cdll
 
 struct Node
 {
+    Node(int key);
     int key;
     Node* next;
     Node* prev;
