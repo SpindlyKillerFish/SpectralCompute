@@ -1,7 +1,5 @@
 #include "gtest/gtest.h"
-
 #include "cdll.h"
-
 #include <stdexcept>
 #include <vector>
 
@@ -214,9 +212,8 @@ TEST(CdllRemove, FromEmptyListThrows)
     EXPECT_THROW(cdll::remove(&list, 1), std::runtime_error);
 }
 
-// Disabled: remove() dereferences the pointer without a null check and crashes,
-// whereas insert() throws for the same input.
-TEST(CdllRemove, DISABLED_NullListPointerThrows)
+// Test that remove from a null pointer throws an exception without crashing
+TEST(CdllRemove, NullListPointerThrows)
 {
     EXPECT_THROW(cdll::remove(nullptr, 1), std::runtime_error);
 }
@@ -297,4 +294,14 @@ TEST_F(CdllTest, InsertAfterEmptyingList)
     insertAll({2, 3});
     EXPECT_EQ(keysForward(list), (std::vector<int>{3, 2}));
     expectLinksConsistent(list);
+}
+
+////////////////////////
+
+TEST(CdllTests, TestInsert)
+{
+    cdll::Node* list = nullptr;
+    cdll::insert(&list, 1);
+    EXPECT_NE(list, nullptr);
+    destroy(&list);
 }
